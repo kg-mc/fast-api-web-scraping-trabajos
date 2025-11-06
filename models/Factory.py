@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 from database import supabase
-
+from .Trabajos import Trabajo
 class Pagina:
     URL: str
     soup: BeautifulSoup
@@ -33,6 +33,22 @@ class Pagina:
                 trabajos_dict = [t.to_dict() for t in self.TRABAJOS]
 
                 response = supabase.table("trabajo").insert(trabajos_dict).execute()
+        if len(self.TRABAJOS) == 0:
+            #extraer de la base de datos
+            response = supabase.table("trabajo").select("*").execute()
+            for item in response.data:
+                trabajo = Trabajo(
+                    cargo=item.get("cargo"),
+                    empresa=item.get("empresa"),
+                    ubicacion=item.get("ubicacion"),
+                    enlace=item.get("enlace"),
+                    fech_finalizacion=item.get("fech_finalizacion"),
+                    sueldo=item.get("sueldo"),
+                    experiencia=item.get("experiencia"),
+                    formacion=item.get("formacion"),
+                    fuente=item.get("fuente")
+                )
+                self.TRABAJOS.append(trabajo)
 
         return self.TRABAJOS
     def consulta_db(self) ->bool:
