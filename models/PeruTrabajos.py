@@ -50,8 +50,39 @@ class PeruTrabajos(Pagina):
         #self.obtener_trabajos(q=self.CLAVE[1])
         for clave in self.CLAVE:
             self.obtener_trabajos(q=clave)
+            self.sector_privado()
         with ThreadPoolExecutor(max_workers=5) as executor:
             futuros = [executor.submit(trabajo.info_pagina) for trabajo in self.TRABAJOS]
+    def sector_privado(self):
+        temp_url = "https://www.perutrabajos.com/oportunidades-en-SECTOR-PRIVADO-2.html"
+        self.obtener_html(URL=temp_url)
+        trabajos = self.soup.find_all("div", class_="post__content")
+        for trabajo in trabajos:
+            formacion = trabajo.find_all("li")[-1].find("strong").text.strip()
+            if True in [True if palabra in formacion else False for palabra in ["Informática", "Computación", "Sistemas", "Ingeniería"]]:
+                cargo = trabajo.find("section", class_="post__header").find("p").text
+                empresa = trabajo.find("i", class_="icon-business").next_sibling.next_sibling.text
+                fecha_finalizacion = trabajo.find("i", class_="icon-calendario").next_sibling.next_sibling.text[-10:]
+                ubicacion = trabajo.find("i", class_="icon-location").next_sibling.next_sibling.text 
+                sueldo = trabajo.find("i", class_="icon-moneda").next_sibling.next_sibling.text
+                enlace = trabajo.find("a")["href"]
+                fuente = "PeruTrabajos-Sector Privado"
+                nuevo_trabajo = Trabajo(
+                    cargo=cargo,
+                    empresa=empresa,
+                    ubicacion=ubicacion,
+                    enlace=enlace,
+                    fech_finalizacion=fecha_finalizacion,
+                    sueldo=sueldo,
+                    formacion=formacion,
+                    fuente=fuente
+                )
+                if nuevo_trabajo not in self.TRABAJOS:
+                    self.TRABAJOS.append(nuevo_trabajo)
+
+
+        
+
             
             
         
