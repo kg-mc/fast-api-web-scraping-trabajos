@@ -1,0 +1,27 @@
+# Entorno virtual
+venv/
+.venv/
+env/
+Scripts/
+__pycache__/
+*.pyc
+
+# Variables de entorno
+.env
+.env.*
+
+# Base de datos local o archivos temporales
+*.sqlite3
+
+# Archivos de editor
+.vscode/
+.idea/
+*.swp
+
+# Archivos de sistema (Windows y macOS)
+Thumbs.db
+.DS_Store
+
+# Carpeta de builds
+dist/
+build/
