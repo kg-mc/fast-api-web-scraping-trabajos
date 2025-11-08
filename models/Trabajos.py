@@ -57,7 +57,4 @@ class Trabajo:
             soup = BeautifulSoup(response.content, 'html.parser')
             self.experiencia = soup.find("div", class_="requisitos").find("ul").text.strip()
         else:
-            return
-            
-            
-            
+            return   

@@ -56,7 +56,7 @@ class Pagina:
         if len(response.data) > 0:
             return True
         return False
-
+    
 class Fabricator:
     @staticmethod
     def get_job_site(site_name):
