@@ -59,7 +59,7 @@ class PeruTrabajos(Pagina):
         trabajos = self.soup.find_all("div", class_="post__content")
         for trabajo in trabajos:
             formacion = trabajo.find_all("li")[-1].find("strong").text.strip()
-            if True in [True if palabra.lower() in formacion.lower() else False for palabra in ["Informática", "Computación", "Sistemas", "Ingeniería"]]:
+            if True in [True if palabra.lower() in formacion.lower() else False for palabra in ["Informática", "Computación", "Sistemas", "Ingeniería", "Computacion", "Ingenieria", "Informatica"]]:
                 cargo = trabajo.find("section", class_="post__header").find("p").text
                 empresa = trabajo.find("i", class_="icon-business").next_sibling.next_sibling.text
                 fecha_finalizacion = trabajo.find("i", class_="icon-calendario").next_sibling.next_sibling.text[-10:]
