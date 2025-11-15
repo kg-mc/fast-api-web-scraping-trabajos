@@ -2,9 +2,18 @@ from fastapi import FastAPI
 from models.Factory import Fabricator
 from database import supabase
 from apscheduler.schedulers.background import BackgroundScheduler
-from datetime import datetime    
+from datetime import datetime
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
-        
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
+
 valores = {
     "actualizaciones": [],
     "paginas_consultadas": {
@@ -20,14 +29,14 @@ def obtener_trabajos():
         job_site = Fabricator.get_job_site(pagina)
         jobs = job_site.get_jobs()
         valores["paginas_consultadas"][pagina] += len(job_site.TRABAJOS)
-        
+
 
 
 
 def tarea_diaria():
     valores["actualizaciones"].append(datetime.now())
     #reset table trabajo (delete all rows ) and eject  the functino on startup to refill it
-    obtener_trabajos()    
+    obtener_trabajos()
     
 scheduler.add_job(tarea_diaria, 'interval', hours=8)
 
