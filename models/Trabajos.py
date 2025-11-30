@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-
+import re 
 
 class Trabajo:
     cargo: str = None
@@ -48,6 +48,8 @@ class Trabajo:
                 self.empresa == other.empresa and
                 self.ubicacion == other.ubicacion and
                 self.fech_finalizacion == other.fech_finalizacion)
+    
+    # rellena informacion de experiencia
     def info_pagina(self):
         if self.fuente == "PeruTrabajos":
             #print("Hola mundo")
@@ -55,6 +57,7 @@ class Trabajo:
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36'
             })
             soup = BeautifulSoup(response.content, 'html.parser')
-            self.experiencia = soup.find("div", class_="requisitos").find("ul").text.strip()
+            texto = soup.find("div", class_="requisitos").find("ul").get_text(separator=" ", strip=True)
+            self.experiencia = " ".join(texto.split())
         else:
             return   

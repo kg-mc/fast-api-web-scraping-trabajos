@@ -23,7 +23,7 @@ valores = {
 scheduler = BackgroundScheduler()
 
 def obtener_trabajos():
-    supabase.table("trabajo").delete().neq("id", 0).execute()
+    supabase.table("trabajo").delete().neq("enlace", 0).execute()
     for pagina in valores["paginas_consultadas"]:
         valores["paginas_consultadas"][pagina] = 0
         job_site = Fabricator.get_job_site(pagina)

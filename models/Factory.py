@@ -26,7 +26,9 @@ class Pagina:
     
     
     def find_jobs(self):
+        # se desarrolla en las subclases
         return NotImplementedError("No implementado aun.")
+    
     def get_jobs(self):
         if self.consulta_db() == False:
                 self.find_jobs()
